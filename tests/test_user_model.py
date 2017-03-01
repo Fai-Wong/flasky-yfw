@@ -1,11 +1,8 @@
 import unittest
 import time
 from app import create_app, db
-<<<<<<< HEAD
 from app.models import User
-=======
 from app.models import Role, User, AnonymousUser, Permission
->>>>>>> dev
   
 class UserModelTestCase(unittest.TestCase):
 	def setUp(self):
