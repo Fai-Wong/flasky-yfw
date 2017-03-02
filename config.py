@@ -9,7 +9,7 @@ class Config:
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = '1932840832@qq.com' #os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD =  os.environ.get('MAIL_PASSWORD')
+    MAIL_PASSWORD =  'tgawicptkppjeebi' #os.environ.get('MAIL_PASSWORD')
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
     FLASKY_MAIL_SENDER = 'Flasky Admin <1932840832@qq.com>'
     FLASKY_ADMIN = 'huang5487378@outlook.com' #os.environ.get('FLASKY_ADMIN')

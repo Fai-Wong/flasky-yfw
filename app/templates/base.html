@@ -6,6 +6,7 @@
 {{ super() }}
 <link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type="imge/x-icon">
 <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type="imge/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
 
 {% block navbar %}
@@ -58,9 +59,9 @@
         {{ message }}
     </div>
     {% endfor %}
-    <div class="page-header">
-        {% block page_content %}{% endblock %}
-    </div>
+    
+    {% block page_content %}{% endblock %}
+    
 </div>
 {% endblock %}
 
