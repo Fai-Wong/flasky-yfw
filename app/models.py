@@ -47,16 +47,16 @@ class Role(db.Model):
             db.session.add(role)
         db.session.commit()
 
-        
+
 class Follow(db.Model):
     __tablename__ = 'follows'
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
                             primary_key=True)
     followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
                             primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-        
-        
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)        
+ 
+ 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -97,14 +97,15 @@ class User(UserMixin, db.Model):
     def password(self):
         raise AttributeError('password is not a readable attribute')
 
+    @property
+    def followed_posts(self):
+        return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
+            .filter(Follow.follower_id == self.id)
+        
     @password.setter
     def password(self, password):
         self.password_hash = generate_password_hash(password)
 
-    @property
-    def follow_posts(self):
-        return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
-            .filter(Follow.follower_id == self.id)
     
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
@@ -277,13 +278,7 @@ class Post(db.Model):
 db.event.listen(Post.body, 'set', Post.on_changed_body)
         
         
-# class Follow(db.Model):
-    # __tablename__ = 'follows'
-    # follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            # primary_key=True)
-    # followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            # primary_key=True)
-    # timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
     
         
         
