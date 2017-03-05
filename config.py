@@ -15,6 +15,7 @@ class Config:
     FLASKY_ADMIN = 'huang5487378@outlook.com' #os.environ.get('FLASKY_ADMIN')
     FLASKY_POSTS_PER_PAGE = 20
     FLASKY_FOLLOW_PER_PAGE = 10
+    FLASKY_COMMENTS_PER_PAGE = 10
     
     @staticmethod
     def init_app(app):
