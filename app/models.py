@@ -252,7 +252,7 @@ class User(UserMixin, db.Model):
             except IntegrityError:
                 db.session.rollback()
 
-    def generate_auth_token(self):
+    def generate_auth_token(self, expiration):
         s = Serializer(current_app.config['SECRET_KEY'],
                         expires_in=expiration)
         return s.dumps({'id': self.id})
@@ -261,7 +261,7 @@ class User(UserMixin, db.Model):
     def verify_auth_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            s.loads(token)
+            data = s.loads(token)
         except:
             return None
         return User.query.get(data['id'])
@@ -306,7 +306,7 @@ class Post(db.Model):
         return json_post
     
     @staticmethod
-    def from_json(self):
+    def from_json(json_post):
         body = json_post.get('body')
         if body is None or body == '':
             raise ValidationError('post does not have a body')

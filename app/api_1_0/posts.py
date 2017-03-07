@@ -10,7 +10,7 @@ from .. import db
 def get_posts():
     page = request.args.get('page', 1, type=int)
     pagination = Post.query.paginate(
-        page, per_page=current_app.aonfig['FLASKY_POSTS_PER_PAGE'],
+        page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
     prev = None
@@ -36,7 +36,7 @@ def get_post(id):
 @api.route('/posts/', methods=['POST'])
 @permission_required(Permission.WRITE_ARTICLES)
 def new_post():
-    post = Post.form_json(request.json)
+    post = Post.from_json(request.json)
     post.author = g.current_user
     db.session.add(post)
     db.session.commit()
