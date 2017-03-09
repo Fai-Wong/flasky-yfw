@@ -5,6 +5,7 @@ from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
 from flask_login import current_user, login_required
 from .. import db
 from ..decorators import admin_required, permission_required
+from flask_sqlalchemy import get_debug_queries
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -256,4 +257,13 @@ def server_shutdown():
     return 'shutting down...'
     
     
+@after_app_request
+def after_request(response):
+    for query in get_debug_queries():
+        if query.duration >= current_app.config['FLASKY_SLOW_DB_QUERY_TIME']:
+            current_app.logger.warning(
+                'Slow query: %s\nParameter: %s\nDuration: %s\nContext: %s\n'
+                %(query.statement, query.parameter, query.duration, 
+                    query.context))
+    return response
     
