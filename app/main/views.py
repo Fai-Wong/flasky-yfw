@@ -257,7 +257,7 @@ def server_shutdown():
     return 'shutting down...'
     
     
-@after_app_request
+@main.after_app_request
 def after_request(response):
     for query in get_debug_queries():
         if query.duration >= current_app.config['FLASKY_SLOW_DB_QUERY_TIME']:
