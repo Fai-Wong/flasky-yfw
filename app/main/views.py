@@ -245,7 +245,15 @@ def moderate_disable(id):
                             page=request.args.get('page', 1, type=int)))
 
     
-    
+@main.route('/shutdown')
+def server_shutdown():
+    if not current_app.testing:
+        abort(404)
+    shutdown = request.environ.get('werkzeng.server.shutdown')
+    if not shutdown:
+        abort(500)
+    shutdown()
+    return 'shutting down...'
     
     
     
