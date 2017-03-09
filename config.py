@@ -14,7 +14,7 @@ class Config:
     FLASKY_MAIL_SENDER = 'Flasky Admin <1932840832@qq.com>'
     FLASKY_ADMIN = 'huang5487378@outlook.com' #os.environ.get('FLASKY_ADMIN')
     FLASKY_POSTS_PER_PAGE = 20
-    FLASKY_FOLLOW_PER_PAGE = 10
+    FLASKY_FOLLOWERS_PER_PAGE = 10
     FLASKY_COMMENTS_PER_PAGE = 10
     
     @staticmethod
@@ -42,3 +42,5 @@ config = {
     'production': ProductionConfig,
     'default': DevelopmentConfig
 }
+
+

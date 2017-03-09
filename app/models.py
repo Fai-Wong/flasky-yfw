@@ -4,7 +4,8 @@ from . import db, login_manager
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app, request, url_for
 from datetime import datetime
-import hashlib, bleach
+import hashlib
+import bleach
 from markdown import markdown
 from app.exceptions import ValidationError
 
@@ -215,7 +216,7 @@ class User(UserMixin, db.Model):
             'username': self.username,
             'member_since': self.member_since,
             'last_seen': self.last_seen,
-            'posts': url_for('api.get_posts', id=self.id, _external=True),
+            'posts': url_for('api.get_user_posts', id=self.id, _external=True),
             'followed_posts': url_for('api.get_user_followed_posts',
                                         id=self.id, _external=True),
             'post_count': self.posts.count()
@@ -293,15 +294,15 @@ class Post(db.Model):
     
     def to_json(self):
         json_post = {
-            'url': url_for('api.get_posts', id=self.id, _external=True),
+            'url': url_for('api.get_post', id=self.id, _external=True),
             'body': self.body,
             'body_html': self.body_html,
             'timestamp': self.timestamp,
             'author': url_for('api.get_user', id=self.author_id,
                                 _external=True),
-            'comments': url_for('api.get_comments', id=self.id,
+            'comments': url_for('api.get_post_comments', id=self.id,
                                 _external=True),
-            'comments_count': self.comments.count()
+            'comment_count': self.comments.count()
         }
         return json_post
     
@@ -350,7 +351,7 @@ class Comment(db.Model):
     
     def to_json(self):
         json_comment = {
-            'comment': url_for('api.get_comment', id=self.id, _external=True),
+            'url': url_for('api.get_comment', id=self.id, _external=True),
             'post': url_for('api.get_post', id=self.post.id, _external=True),
             'body': self.body,
             'body_html': self.body_html,

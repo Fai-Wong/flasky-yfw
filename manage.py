@@ -6,7 +6,7 @@ if os.environ.get('FLASK_COVERAGE'):
     COV.start()
 
 from app import create_app, db
-from app.models import User, Role, Permission, Post, Comment
+from app.models import User, Follow, Role, Permission, Post, Comment
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 

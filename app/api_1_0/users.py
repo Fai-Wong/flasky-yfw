@@ -14,14 +14,14 @@ def get_user(id):
 def get_user_posts(id):
     user = User.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
-    pagination = user.posets.query.order_by(Post.timestamp.desc()).paginate(
-        page=page, per_page=current_app.config['FALSKY_POSTS_PER_PAGE'],
+    pagination = user.posts.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
     prev = None
-    if pagination.has.prev:
+    if pagination.has_prev:
         prev = url_for('api.get_user_posts', page=page-1, _external=True)
-    next = Next
+    next = None
     if pagination.has_next:
         next = url_for('api.get_user_posts', page=page+1, _external=True)
     return jsonify({
@@ -36,18 +36,18 @@ def get_user_posts(id):
 def get_user_followed_posts(id):
     user = User.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
-    pagination = user.followed_posts.query.order_by(post.timestamp.desc()).paginate(
-        page=page, per_page=current_app.config['FALSKY_POSTS_PER_PAGE'],
+    pagination = user.followed_posts.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-    prev = none
-    if pagination.has.prev:
+    prev = None
+    if pagination.has_prev:
         prev = url_for('api.get_user_followed_posts', page=page-1, _external=True)
     next = None
-    if pagination.has.next:
+    if pagination.has_next:
         next = url_for('api.get_user_followed_posts', page=page+1, _external=True)
     return jsonify({
-        'posts': [post.to_json for post in posts],
+        'posts': [post.to_json() for post in posts],
         'prev': prev,
         'next': next,
         'count': pagination.total
