@@ -13,7 +13,7 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
     FLASKY_MAIL_SENDER = 'Flasky Admin <1932840832@qq.com>'
-    FLASKY_ADMIN = 'huang5487378@outlook.com' #os.environ.get('FLASKY_ADMIN')
+    FLASKY_ADMIN = 'faiwongyip@outlook.com' #os.environ.get('FLASKY_ADMIN')
     FLASKY_POSTS_PER_PAGE = 20
     FLASKY_FOLLOWERS_PER_PAGE = 20
     FLASKY_COMMENTS_PER_PAGE = 20
@@ -62,6 +62,8 @@ class ProductionConfig(Config):
 
         
 class HerokuConfig(ProductionConfig):
+    SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
+
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)
@@ -70,13 +72,14 @@ class HerokuConfig(ProductionConfig):
         file_handler = StreamHandler()
         file_handler.setLevel(logging.ERROR)
         app.logger.addhandler(file_handler)
-    
-    SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
 
+    
 config = {
     'developmentconfig': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
+    'heroku': HerokuConfig,
+    
     'default': DevelopmentConfig
 }
 
