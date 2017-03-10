@@ -18,6 +18,7 @@ class Config:
     FLASKY_FOLLOWERS_PER_PAGE = 20
     FLASKY_COMMENTS_PER_PAGE = 20
     FLASKY_SLOW_DB_QUERY_TIME = 0.5
+    SSL_DISABLE = True
     
     @staticmethod
     def init_app(app):
@@ -58,7 +59,20 @@ class ProductionConfig(Config):
             secure=secure)
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
+
         
+class HerokuConfig(ProductionConfig):
+    @classmethod
+    def init_app(cls, app):
+        ProductionConfig.init_app(app)
+        import logging
+        from logging import StreamHandler
+        file_handler = StreamHandler()
+        file_handler.setLevel(logging.ERROR)
+        app.logger.addhandler(file_handler)
+    
+    SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
+
 config = {
     'developmentconfig': DevelopmentConfig,
     'testing': TestingConfig,
