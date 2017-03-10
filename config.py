@@ -67,12 +67,16 @@ class HerokuConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)
+        
         import logging
         from logging import StreamHandler
         file_handler = StreamHandler()
         file_handler.setLevel(logging.ERROR)
         app.logger.addhandler(file_handler)
-
+        
+        from werkzeug.contrib.fixers import ProxyFix
+        app.wsgi_app = ProxyFix(app.wsgu_app)
+        
     
 config = {
     'developmentconfig': DevelopmentConfig,
